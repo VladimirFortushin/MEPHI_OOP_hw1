@@ -55,12 +55,7 @@ public class Main {
     Реализовать цикл для постоянного чтения команд пользователя. Поддержать возможность выхода из приложения.✅
 */
     public static void main(String[] args) {
-
         tempUser = authUser();
-        if (!DataManager.getUserSet().contains(tempUser)) {
-            System.out.println("Неверное имя пользователя или пароль");
-            System.exit(-1);
-        }
         setWallet();
         setCategories();
     }
@@ -217,8 +212,14 @@ public class Main {
 
         System.out.print("Введите пароль: ");
         String password = scanner.nextLine();
+        Optional<User> dbUser = DataStorageUtil.getUserSet().stream().filter(user -> user.getPassword().equals(password) && user.getLogin().equals(username)).findFirst();
 
-        return new User(username, password);
+        if (DataStorageUtil.getUserSet().contains(tempUser) || dbUser.isEmpty()) {
+            System.out.println("Неверное имя пользователя или пароль");
+            System.exit(-1);
+        }
+
+        return dbUser.get();
     }
 
     //Поддержать возможность подсчета по нескольким выбранным категориям. Если категория не найдена, уведомлять пользователя.✅
