@@ -214,7 +214,7 @@ public class Main {
         String password = scanner.nextLine();
         Optional<User> dbUser = DataStorageUtil.getUserSet().stream().filter(user -> user.getPassword().equals(password) && user.getLogin().equals(username)).findFirst();
 
-        if (DataStorageUtil.getUserSet().contains(tempUser) || dbUser.isEmpty()) {
+        if (dbUser.isEmpty()) {
             System.out.println("Неверное имя пользователя или пароль");
             System.exit(-1);
         }
